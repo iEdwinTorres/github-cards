@@ -11,20 +11,41 @@ class App extends Component {
 	};
 
 	handleToggle = (event) => {
-		console.log("was clicked");
-		fetch(githubUserInfoURL("davegregg"))
-			.then((response) => response.json())
-			.then((responseBody) => {
-				console.log(responseBody);
-				this.setState({ user: responseBody });
-			});
-	}
+		if (this.state.active === false) {
+			fetch(githubUserInfoURL("iEdwinTorres"))
+				.then((response) => response.json())
+				.then((responseBody) => {
+					console.log(responseBody);
+					this.setState({
+						user: responseBody,
+						active: true
+					});
+				});
+		} else {
+			this.setState({ active: false });
+		}
+	};
 
 	render() {
 		return (
-			<button onClick={this.handleToggle}>
-				Toggle User View
-			</button>
+			<React.Fragment>
+				<button onClick={this.handleToggle}>
+					Toggle User View
+				</button>
+				{this.state.active && (
+					<React.Fragment>
+						<img
+							src={this.state.user.avatar_url}
+							alt="user profile"
+						/>
+						<h1>{this.state.user.name}</h1>
+						<p>Bio: {this.state.user.bio}</p>
+						<p>
+							Followers: {this.state.user.followers}
+						</p>
+					</React.Fragment>
+				)}
+			</React.Fragment>
 		);
 	}
 }
