@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
+import { Button } from 'semantic-ui-react'
+import { Card, Icon, Image } from 'semantic-ui-react'
 
 const githubUserInfoURL = (githubUserName) =>
 	`https://api.github.com/users/${githubUserName}`;
@@ -12,7 +14,7 @@ class App extends Component {
 
 	handleToggle = (event) => {
 		if (this.state.active === false) {
-			fetch(githubUserInfoURL("iEdwinTorres"))
+			fetch(githubUserInfoURL("iedwintorres"))
 				.then((response) => response.json())
 				.then((responseBody) => {
 					console.log(responseBody);
@@ -29,20 +31,25 @@ class App extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<button onClick={this.handleToggle}>
+				<Button onClick={this.handleToggle}>
 					Toggle User View
-				</button>
+				</Button>
 				{this.state.active && (
 					<React.Fragment>
-						<img
-							src={this.state.user.avatar_url}
-							alt="user profile"
-						/>
-						<h1>{this.state.user.name}</h1>
-						<p>Bio: {this.state.user.bio}</p>
-						<p>
-							Followers: {this.state.user.followers}
-						</p>
+						<Card>
+							<Image src={this.state.user.avatar_url} />
+							<Card.Content>
+								<Card.Header>{this.state.user.name}</Card.Header>
+								<Card.Meta>Bio: {this.state.user.bio}</Card.Meta>
+							</Card.Content>
+							<Card.Content extra>
+      					
+        						<Icon name='user' />
+        							{this.state.user.followers} followers
+      					
+    						</Card.Content>
+						</Card>
+						
 					</React.Fragment>
 				)}
 			</React.Fragment>
